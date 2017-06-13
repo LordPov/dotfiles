@@ -1,0 +1,12 @@
+target
+*.ipr
+*.iml
+*.iws
+.idea
+.DS_Store
+T:\\
+*.LoadDataInFile
+*.pyc
+build-osx
+*.ede
+compile_commands.json
