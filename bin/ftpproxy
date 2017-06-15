@@ -1,0 +1,6 @@
+#!/bin/sh
+read -s -p "Password: " passwd
+echo ""
+export ftp_proxy="http://bryan:$passwd@sydproxy01.trading.imc.intra:3128"
+export http_proxy="http://bryan:$passwd@sydproxy01.trading.imc.intra:3128"
+$@

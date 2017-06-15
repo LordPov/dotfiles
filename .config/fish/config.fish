@@ -11,6 +11,7 @@ switch (uname)
             set -x LESS ' -R '
         end
         set -x DYLD_FALLBACK_LIBRARY_PATH $HOME/miniconda3/lib $DYLD_FALLBACK_LIBRARY_PATH
+		alias m-cli='/usr/local/m-cli/m'
     case Linux
         set -x BROWSER (which links)
         set -x M2_HOME "/usr/share/maven"
@@ -33,7 +34,7 @@ set -x CDPATH . ~ ~/data
 if test -e $HOME/miniconda3/bin
     set miniconda_bin = $HOME/miniconda3/bin
 end
-set -x PATH $HOME/bin $miniconda_bin $JAVA_HOME/bin /usr/local/bin $PATH
+set -x PATH $HOME/bin $miniconda_bin $JAVA_HOME/bin /usr/local/bin $HOME/data/c0de/misc $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1

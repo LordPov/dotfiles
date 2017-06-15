@@ -1,0 +1,2 @@
+#!/bin/sh
+mencoder -ovc lavc -vf rotate=1 -oac pcm $1 -o $2

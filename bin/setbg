@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+SCRIPT = """/usr/bin/osascript<<END
+tell application "Finder"
+set desktop picture to POSIX file "%s"
+end tell
+END"""
+
+os.system(SCRIPT % sys.argv[1])
+os.system('killall Dock')

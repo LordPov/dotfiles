@@ -1,0 +1,21 @@
+# bash completion for j
+#
+#have j &&
+_j()
+{
+    local cur
+
+    COMPREPLY=()
+    _get_comp_words_by_ref cur
+
+    options="-d --debug -v --verbose -h --help"
+    if [[ $cur == -* ]]; then
+        COMPREPLY=( $( compgen -W "$options" -- "$cur") )
+    else
+        aliases=$( cat ${HOME}/.imc/deployment_aliases | cut -f 1 -d ":" )
+        COMPREPLY=( $( compgen -W "$aliases" -- "$cur") )
+    fi
+
+    return 0
+} &&
+complete -F _j j

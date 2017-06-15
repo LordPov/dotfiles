@@ -1,0 +1,180 @@
+#!/bin/bash
+
+#========================================================================
+printUsage()
+{   
+cat << %%USAGE%%
+Usage:
+distributeSshKeys [user@]host [ -a ][ -b ][ -c ][-i <private key file>]
+
+Description:
+Utility for distributing SSH keys.
+
+Options:
+-h      display this help message
+-a      Option -a will distribute ssh keys via root user
+-b      Option -b will distribute also root@host ssh keys to user@host
+-c      Option -c will give user@host the same private keys as local user
+-i      Specify identity file for the connection
+%%USAGE%%
+}
+
+#============================================================================
+# create key if it doesn't exist already
+#============================================================================
+checkKey()
+{
+local myFile="$HOME/.ssh/id_dsa.pub"
+
+if [ ! -f "$myFile" ]
+then
+    echo "DSA key was not found on local machine. Generating ..."
+    ssh-keygen -t dsa -f $HOME/.ssh/id_dsa -N ''
+    echo 'StrictHostKeyChecking no' >> $HOME/.ssh/config
+fi
+setPerms $HOME
+}
+
+#============================================================================
+# Set proper permissions
+#============================================================================
+setPerms()
+{
+local myHome="$1"
+
+if [ -z "`uname | grep CYGWIN`" ]
+then
+    chmod -R go-rwx $myHome/.ssh
+else
+    chmod a+rx,go-w $myHome/.ssh
+    chmod a+rx,go-w $myHome/.ssh/authorized_keys2
+fi
+}
+
+#============================================================================
+# Update authorized_keys2 file if necessary
+#============================================================================
+updateKeys()
+{
+local aKey="$1"
+local aUser="$2"
+local aDistFlag="$3"
+local myId myHome
+
+myId="`echo $aKey | awk '{print $2}'`"
+
+if [ -z "$aUser" ]
+then
+    myHome="$HOME"
+else
+    myHome="/home/$aUser"
+fi
+
+[ ! -e $myHome/.ssh ] && mkdir -p $myHome/.ssh
+
+if [ -z "`uname | grep CYGWIN`" ]
+then
+    chmod -R go-rwx $myHome/.ssh
+else
+    chmod a+rx,go-w $myHome/.ssh
+fi
+
+[ ! -f "$myHome/.ssh/authorized_keys2" ] && \
+    touch $myHome/.ssh/authorized_keys2
+[ -z "`awk \"\\$2 == \\"$myId\\" {print}\" $myHome/.ssh/authorized_keys2`" ] && \
+    echo "$aKey" >> $myHome/.ssh/authorized_keys2
+# Distribute Root key as well
+if [ -n "$aDistFlag" ]
+then
+    local myKey myId
+    checkKey
+    myKey="`cat ~/.ssh/id_dsa.pub`"
+    myId="`awk '{print $2}' ~/.ssh/id_dsa.pub`"
+
+    [ -z "`awk \"\\$2 == \\"$myId\\" {print}\" $myHome/.ssh/authorized_keys2`" ] && \
+        echo "$myKey" >> $myHome/.ssh/authorized_keys2
+fi
+setPerms $myHome
+[ -n "$aUser" ] && chown -R --reference $myHome $myHome/.ssh
+}
+
+#============================================================================
+updateKeys2()
+{
+local aUser="$1"
+local myKey myId
+local myHome="/home/$aUser"
+
+checkKey
+
+myKey="`cat ~/.ssh/id_dsa.pub`"
+myId="`awk '{print $2}' ~/.ssh/id_dsa.pub`"
+
+[ -z "`awk \"\\$2 == \\"$myId\\" {print}\" $myHome/.ssh/authorized_keys2`" ] && \
+    echo "$myKey" >> $myHome/.ssh/authorized_keys2
+setPerms $myHome
+[ -n "$aUser" ] && chown -R --reference $myHome $myHome/.ssh
+}
+
+
+#========================================================================
+# MAIN
+#========================================================================
+myUserHost=$1
+shift
+
+OPTERR=0
+OPTERR=
+OPTIND=
+OPTARG=
+
+myRootFlag=
+myDistFlag=
+myPermFlag=
+myIdentityOption=""
+
+while  getopts abchi: option $*
+do
+        case $option in
+        a)
+                myRootFlag="true"
+                ;;
+        b)
+                myDistFlag="true"
+                ;;
+        c)
+                myPermFlag="true"
+                ;;
+        i)
+                myIdentityOption=" -i $OPTARG"
+                ;;
+        *)
+                printUsage
+                exit 0;
+                ;;
+        esac
+done
+
+
+#============================================================================
+[ -z "$myUserHost" ] && printUsage && echo "ERROR: No user@host parameter specified" && exit 1
+myUser=${myUserHost%%@*}
+myHost=${myUserHost##*@}
+[ "$myHost" == "$myUserHost" ] && myUser=""
+
+checkKey
+
+if [ -n "$myRootFlag" ]
+then
+    # Distribution via root
+    ( declare -f checkKey setPerms updateKeys; echo "updateKeys \"`cat ~/.ssh/id_dsa.pub`\" \"$myUser\" \"$myDistFlag\"" ) | ssh $myIdentityOption -x root@$myHost bash -s
+else
+    ( declare -f checkKey setPerms updateKeys; echo "updateKeys \"`cat ~/.ssh/id_dsa.pub`\"" ) | ssh $myIdentityOption -x $myUserHost bash -s
+    [ -n "$myDistFlag" ] && ( declare -f checkKey setPerms updateKeys2; echo "updateKeys2 \"$myUser\"" ) | ssh $myIdentityOption -x root@$myHost bash -s
+fi
+
+if [ -n "$myPermFlag" ]
+then
+    scp $myIdentityOption $HOME/.ssh/id_dsa $HOME/.ssh/id_dsa.pub $myUserHost:.ssh
+    ssh $myIdentityOption $myUserHost 'echo "StrictHostKeyChecking no" > .ssh/config && chmod 600 .ssh/config'
+fi

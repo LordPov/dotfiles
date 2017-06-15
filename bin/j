@@ -1,0 +1,193 @@
+#!/usr/bin/env bash
+# Jump To Master Users
+#
+#                                                       80x25 linebreak here |
+
+#=============================================================================
+# General library configuration
+#=============================================================================
+
+source getoptx.sh
+
+#=============================================================================
+# Usage
+#=============================================================================
+
+# to generate a HTML page for confluence, do:
+# dzdo yum install -y asciidoc
+# j > out.txt && asciidoc -s -d manpage -o out.html out.txt
+
+function usage()
+{
+cat << EOF
+J(1)
+====
+:doctype: manpage
+
+NAME
+----
+j - jump to a master user
+
+SYNOPSIS
+--------
+	$(basename ${0}) [-dvh] ALIAS
+
+DESCRIPTION
+-----------
+In its first form, the j utility initiates an ssh shell to a master user
+as derived from the provided ALIAS.
+In its second form, the j utility can be used to interactively find existing
+master users using bash command line completion.
+
+The following options are available:
+
+    -d, --debug      prints the ssh command to standard out without executing it
+    -q, --query      prints the username@hostname to stdout
+    -v, --verbose    increases verbosity
+    -h, --help       displays this help
+
+USAGE
+-----
+The easiest way to get started is to type "j", followed by a space character,
+and then send 2 TAB keys. This will provide a list of available ALIASES.
+Typing any character other than a TAB will be used as a filter for the ALIASES
+that show up using the TAB expansion. I.e. typing
+
+\$ j p_nl_omm
+
+followed by 2 tab keys will show all available master user for deployments
+whose names starts with p_nl_omm
+
+ALIASES
+-------
+The list of available aliases is built from the existing servers hosting
+master users. The aliases are built using the deployment name as unique
+identifier. If several master users pointing to the same deployment are
+found, then the alias containing that deployment name will be pointing to
+the currently preferred host. Also, fully canonical aliases are generated
+for each instance of a master user as well.
+
+I.e. if deployment u_us_omm_core2db_01 is hosted on the machines 'cow' and
+'thulium', typing
+
+\$ j u_us_omm_core2db_01
+
+will transport you to the preferred host. To get a list of the available
+hosts or to jump explicitly to the host of your chosing, you need to prepend
+the above alias with a single dot '.' and use tab for completion. 
+
+\$ j .u_us_omm_core2db_01
+.u_us_omm_core2db_01@thulium .u_us_omm_core2db_01@cow
+
+MULTIPLE INSTANCES OF MASTER USERS
+----------------------------------
+At this point in time, it is possible that multiple master users stored on
+different hosts point at the same deployment. Although this is currently not
+entirely supported or endorsed, it might happen for several reasons. The main
+problem with multiple master users is that they are, at this point (Oct 2011),
+not shallow. A master user cannot be easily re-created using just a couple of
+parameters, as it might contain local changes not stored anywhere else.
+Therefore duplicating master users is discouraged.
+
+PREFERRED HOSTS
+---------------
+If, for a given deployment, the master user exists on multiple host, the default 
+alias will be generated based on the following rules:
+
+ 1 If a particular host is marked as obsolete (e.g. balfour in NL) the preferred
+   host is the new host (e.g. apricot for NL production)
+
+	p_nl_omm_trad_eurex01 -> master_p_nl_omm_trad_eurex01@apricot
+	.p_nl_omm_trad_eurex01@apricot -> master_p_nl_omm_trad_eurex01@apricot
+	.p_nl_omm_trad_eurex01@balfour -> master_p_nl_omm_trad_eurex01@balfour
+
+
+ 2 If there are two or more hosts which are not obsolete the preferred host is
+   the host which is nominally assigned as primary host to the business unit 
+   which 'owns' the deployment (e.g. americandad for us_omm production deployments 
+   and hornfelds for atg iarb and efmm.
+
+	p_us_omm_trad_amex01 -> master_p_us_omm_trad_amex01@americandad
+	.p_us_omm_trad_amex01@americandad -> master_p_us_omm_trad_amex01@americandad
+	.p_us_omm_trad_amex01@hornfelds -> master_p_us_omm_trad_amex01@hornfelds
+
+
+SEE ALSO
+--------
+
+	http://confluence/display/DT/Master+Host+Machinery
+
+EOF
+}
+
+#=============================================================================
+# Parse Arguments
+#=============================================================================
+
+RUN=true
+VERBOSE=false
+QUERY=false
+while getoptex "d; debug; q; query; v; verbose; h; help" $@; do
+    case ${OPTOPT} in
+        d | debug )
+            RUN=false ;;
+        q | query )
+            RUN=false
+            QUERY=true ;;
+        v | verbose )
+            VERBOSE=true ;;
+        h | help )
+            usage
+            exit 0 ;;
+        * )
+            usage
+            exit 0 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+theAlias=$1
+if [ -z "$theAlias" ]; then
+    usage
+    exit 0
+fi
+
+userAtHost=$( cat ${HOME}/.imc/deployment_aliases | grep ^$theAlias: | cut -f 2 -d ":" )
+numMasters=$( cat ${HOME}/.imc/deployment_aliases | grep ^$theAlias: | cut -f 2 -d ":"  | wc -l)
+
+if [ -z "$userAtHost" ]; then
+    echo "No alias match for $theAlias"
+    # TODO: if theAlias does not start with a dot, also query for the canonical
+ 	# aliases that start with a dot.  
+	exit 1
+fi
+
+if [[ ${numMasters} -gt 1 ]];
+then
+	# TODO: add check for canonical names with a leading dot
+    echo -n "Ambiguous alias resolves to more than one master user: " && echo $userAtHost
+    exit 1
+fi
+
+if ${VERBOSE}; then
+    echo -n "query: ${userAtHost}, command:[ssh $userAtHost]"
+fi
+
+if ${RUN}; then
+    if ${VERBOSE}; then
+        echo "ssh $userAtHost"
+    fi
+    if klist -s 2> /dev/null; then
+    	exec ssh "$userAtHost"
+    else
+	    echo "No kerberos ticket. Run 'kinit'."
+	    exit 1
+    fi
+else
+	if ${QUERY}; then
+		echo ${userAtHost}
+	else # "debug"
+    	echo "ssh $userAtHost"
+	fi
+fi
+
