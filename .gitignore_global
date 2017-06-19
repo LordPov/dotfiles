@@ -10,3 +10,8 @@ T:\\
 build-osx
 *.ede
 compile_commands.json
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+cmake_install.cmake
+lib_managed

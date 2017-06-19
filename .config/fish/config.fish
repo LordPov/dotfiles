@@ -33,8 +33,12 @@ end
 set -x CDPATH . ~ ~/data
 if test -e $HOME/miniconda3/bin
     set miniconda_bin = $HOME/miniconda3/bin
+	source $HOME/miniconda3/etc/fish/conf.d/conda.fish
 end
-set -x PATH $HOME/bin $miniconda_bin $JAVA_HOME/bin /usr/local/bin $HOME/data/c0de/misc $PATH
+if test -e $HOME/google-cloud-sdk/bin
+    set gcloud_bin = $HOME/google-cloud-sdk/bin
+end
+set -x PATH $HOME/bin $miniconda_bin $gcloud_bin $JAVA_HOME/bin /usr/local/bin $HOME/data/c0de/misc $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1
@@ -78,5 +82,6 @@ alias dkm='docker-machine'
 #
 alias dog='pygmentize'
 alias vi='vim'
+alias sa='screen -r'
 
 #source /Users/bryan/.iterm2_shell_integration.fish

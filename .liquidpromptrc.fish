@@ -81,7 +81,7 @@ set -x LP_ENABLE_GIT 1
 
 # Do you want to use the svn special features ?
 # Recommended value is 1
-set -e LP_ENABLE_SVN
+set -x LP_ENABLE_SVN 1
 
 # Do you want to use the mercurial special features ?
 # Recommended value is 1
