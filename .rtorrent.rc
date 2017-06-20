@@ -1,0 +1,4 @@
+download_rate = 320
+upload_rate = 24
+directory = /home/lordpov/downloads
+port_range = 6881-6999
