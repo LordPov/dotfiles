@@ -6,5 +6,5 @@ function ls
                 set ls_bin /usr/local/bin/gls
             end
     end
-    eval $ls_bin --color=auto $argv
+    eval (string escape -- $ls_bin --color=auto $argv)
 end
