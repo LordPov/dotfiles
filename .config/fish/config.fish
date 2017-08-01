@@ -17,7 +17,9 @@ switch (uname)
         set -x M2_HOME "/usr/share/maven"
         switch (lsb_release -i | cut -c 17-)
             case Arch
-                set -x JAVA_HOME "/usr/lib/jvm/java-8-openjdk/jre"
+                if test -e /usr/lib/jvm/java-8-openjdk/jre
+                    set -x JAVA_HOME "/usr/lib/jvm/java-8-openjdk/jre"
+                end
             case Fedora
                 set -x JAVA_HOME "/opt/imc/oracle-jdk-1.7.0_u11"
             case '*'
