@@ -61,6 +61,7 @@ set -x TAGID_DIR {$HOME}/data/tagid
 #
 # Git Aliases
 #
+alias gc='git clean -fdx'
 alias gco='git checkout'
 alias gci='git commit'
 alias gb='git branch'
