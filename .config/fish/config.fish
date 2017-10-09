@@ -11,7 +11,8 @@ switch (uname)
             set -x LESS ' -R '
         end
         set -x DYLD_FALLBACK_LIBRARY_PATH $HOME/miniconda3/lib $DYLD_FALLBACK_LIBRARY_PATH
-		alias m-cli='/usr/local/m-cli/m'
+        alias m-cli='/usr/local/m-cli/m'
+        alias j='j_darwin'
     case Linux
         set -x BROWSER (which links)
         set -x M2_HOME "/usr/share/maven"
@@ -25,6 +26,7 @@ switch (uname)
             case '*'
                 echo "config.fish: unsupported distro"
         end
+        alias j='j_linux'
     case '*'
         echo "config.fish: unsupported operating system"
 end

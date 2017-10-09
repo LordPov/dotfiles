@@ -12,3 +12,7 @@ alias dkm='docker-machine'
 
 export PATH="$HOME/miniconda3/bin:$PATH"
 
+# Generate J Aliases
+if [[ -f ~/generate_j_aliases.sh ]]; then
+    . ~/generate_j_aliases.sh
+fi

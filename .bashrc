@@ -149,3 +149,7 @@ function reggrep() {
         done
     done | sort -u
 }
+# Generate J Aliases
+if [[ -f ~/generate_j_aliases.sh ]]; then
+    . ~/generate_j_aliases.sh
+fi

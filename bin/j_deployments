@@ -1,0 +1,19 @@
+#!/bin/bash
+
+curl -k -s 'http://cupcake/api/deployment/?fields=name&page_size=10000' | python -c \
+"
+import os, re, sys, json;
+
+file = open('${HOME}/.j_deployments', 'w')
+
+results = json.load(sys.stdin)['results']
+
+alias_lines = []
+for result in results:
+    n = result['name']
+    if re.match('^[puqd]_[a-z]{2}_[a-z]{1,4}_[a-z0-9]{1,4}', n):
+        alias_lines.append(n)
+
+file.writelines(' '.join(alias_lines))
+file.close()
+"
