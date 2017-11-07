@@ -1,4 +1,0 @@
-#!/bin/bash
-
-echo "select deployment_ as Deployment,component_ as Component,revision_ as Image,host_ as Host from component_ where deleted_ is null and component_ like '%$1%' and (deployment_ like 'u%' or deployment_ like 'p%') order by deployment_,component_" | mysql -h apddb -u reader -preader deployments
-
