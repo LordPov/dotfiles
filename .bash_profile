@@ -16,3 +16,4 @@ export PATH="$HOME/miniconda3/bin:$PATH"
 if [[ -f ~/generate_j_aliases.sh ]]; then
     . ~/generate_j_aliases.sh
 fi
+eval "$(jenv init -)"

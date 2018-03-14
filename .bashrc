@@ -35,7 +35,7 @@ stty -ixon
 export GOROOT="/usr/local/opt/go"
 export GOPATH="/usr/local/opt/go"
 export JAVA_HOME=$(/usr/libexec/java_home)
-export PATH=${HOME}/bin:/usr/local/bin:${JAVA_HOME}/bin:${GOROOT}/bin:${PATH}
+export PATH=${HOME}/bin:${HOME}/.jenv/bin:/usr/local/bin:${GOROOT}/bin:${PATH}
 #export CDPATH=".:~:~/data"
 unset CDPATH
 #export PYTHONPATH="${HOME}/Library/Python/2.7/site-packages"

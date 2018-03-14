@@ -3,7 +3,10 @@
 #
 switch (uname)
     case Darwin
-        set -x JAVA_HOME (/usr/libexec/java_home)
+        if not test -e /usr/local/bin/jenv
+            set -x JAVA_HOME (/usr/libexec/java_home)
+            set ADD_JAVA_PATH = $JAVA_HOME/bin
+        end
         set -x M2_HOME "/usr/local/opt/maven/libexec"
         set -x BROWSER "/Applications/Google\ Chrome.app"
         if test -e /usr/local/bin/src-hilite-lesspipe.sh
@@ -26,6 +29,7 @@ switch (uname)
             case '*'
                 echo "config.fish: unsupported distro"
         end
+        set ADD_JAVA_PATH = $JAVA_HOME/bin
         alias j='j_linux'
     case '*'
         echo "config.fish: unsupported operating system"
@@ -42,7 +46,7 @@ end
 if test -e $HOME/google-cloud-sdk/bin
     set gcloud_bin = $HOME/google-cloud-sdk/bin
 end
-set -x PATH $HOME/bin $miniconda_bin $gcloud_bin $JAVA_HOME/bin /usr/local/bin $HOME/data/c0de/misc $PATH
+set -x PATH $HOME/bin $miniconda_bin $gcloud_bin $ADD_JAVA_PATH /usr/local/bin $HOME/data/c0de/misc $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1
@@ -52,7 +56,6 @@ set -x GOPATH "/usr/local"
 #
 # IMC
 #
-#set -x JAVA_OPTIONS "-da:ca.odell.glazedlists.impl.adt.barcode2.SimpleTree"
 set -x LOG_DIR {$HOME}/Work/log
 set -x DEPLOYMENT_DIR {$HOME}/Work/deployment
 set -x MAVEN_OPTS "-Xmx4096m"

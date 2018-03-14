@@ -464,6 +464,8 @@
 	</dict>
 	<key>NSWindow Frame Preferences</key>
 	<string>281 564 606 456 0 0 1680 1027 </string>
+	<key>NSWindow Frame ProfilesPanel</key>
+	<string>-2652 567 735 382 -3440 0 3440 1417 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
 	<string>-1920 966 400 129 -3440 0 3440 1417 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -473,11 +475,11 @@
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>-1942 323 1018 447 -3440 0 3440 1417 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
-	<string>1670 993 592 584 1440 0 2560 1577 </string>
+	<string>-3107 833 592 584 -3440 0 3440 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>-1719 0 1719 1417 -3440 0 3440 1417 </string>
+	<string>-1719 7 1677 1410 -3440 0 3440 1417 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>-3440 115 865 900 -3440 0 3440 1417 </string>
+	<string>-3440 517 865 900 -3440 0 3440 1417 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
 	<string>2407 440 865 898 1680 150 3440 1417 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
@@ -1364,7 +1366,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-10-06T03:07:48Z</date>
+	<date>2017-12-28T22:51:51Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -1397,9 +1399,11 @@
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<false/>
 	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1415598592</real>
+	<real>1508883584</real>
 	<key>URLHandlersByGuid</key>
 	<dict/>
+	<key>Use background pattern indicator</key>
+	<true/>
 	<key>UseBorder</key>
 	<false/>
 	<key>UseCompactLabel</key>
@@ -1423,7 +1427,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.3.beta.1</string>
+	<string>3.1.5.beta.2</string>
 	<key>kCommandHistoryHasEverBeenUsed</key>
 	<true/>
 </dict>
