@@ -38,7 +38,7 @@ end
 #
 # General
 #
-set -x CDPATH . ~ ~/data
+set -x CDPATH . ~/code
 if test -e $HOME/miniconda3/bin
     set miniconda_bin = $HOME/miniconda3/bin
 	source $HOME/miniconda3/etc/fish/conf.d/conda.fish
@@ -46,22 +46,13 @@ end
 if test -e $HOME/google-cloud-sdk/bin
     set gcloud_bin = $HOME/google-cloud-sdk/bin
 end
-set -x PATH $HOME/bin $miniconda_bin $gcloud_bin $ADD_JAVA_PATH /usr/local/bin $HOME/data/c0de/misc $PATH
+set -x PATH $HOME/bin $miniconda_bin $gcloud_bin $ADD_JAVA_PATH /usr/local/bin $HOME/code/c0de/misc $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1
 set -x SBT_OPTS "-XX:+CMSClassUnloadingEnabled"
 set -x GOPATH "/usr/local"
-
-#
-# IMC
-#
-set -x LOG_DIR {$HOME}/Work/log
-set -x DEPLOYMENT_DIR {$HOME}/Work/deployment
 set -x MAVEN_OPTS "-Xmx4096m"
-set -x TAGID_DIR {$HOME}/data/tagid
-#set -x http_proxy 'http://unixproxy:3128/'
-#set -x https_proxy 'http://unixproxy:3128/'
 
 #
 # Git Aliases
