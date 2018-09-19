@@ -38,7 +38,7 @@ end
 #
 # General
 #
-set -x CDPATH . ~/code
+set -x CDPATH . ~/edge ~/code
 if test -e $HOME/miniconda3/bin
     set miniconda_bin = $HOME/miniconda3/bin
 	source $HOME/miniconda3/etc/fish/conf.d/conda.fish

@@ -22,8 +22,8 @@ function m -d "Maven quickener"
     case 0
       mvn
     case 1
-      mvn $margs
+      mvn -T 1C $margs
     case '*'
-      mvn $margs $argv[2..-1]
+      mvn -T 1C $margs $argv[2..-1]
   end
 end
