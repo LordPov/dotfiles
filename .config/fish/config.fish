@@ -43,9 +43,6 @@ if test -e $HOME/miniconda3/bin
     set miniconda_bin = $HOME/miniconda3/bin
 	source $HOME/miniconda3/etc/fish/conf.d/conda.fish
 end
-if test -e $HOME/google-cloud-sdk/bin
-    set gcloud_bin = $HOME/google-cloud-sdk/bin
-end
 set -x PATH $HOME/bin $miniconda_bin $gcloud_bin $ADD_JAVA_PATH /usr/local/bin $HOME/code/c0de/misc $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
