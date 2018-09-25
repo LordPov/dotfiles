@@ -1,5 +1,4 @@
 function m -d "Maven quickener"
-  set skiptests "-DskipTests"
   for a in (string split '' $argv[1])
     switch $a
       case c
@@ -11,7 +10,7 @@ function m -d "Maven quickener"
       case u
         set margs $margs "-U"
       case t
-        set -e skiptests
+        set skiptests "-DskipTests"
       case d
         set margs $margs dependency:tree "-Dverbose"
     end
