@@ -17,3 +17,5 @@ if [[ -f ~/generate_j_aliases.sh ]]; then
     . ~/generate_j_aliases.sh
 fi
 eval "$(jenv init -)"
+
+[ -s "/Users/rendo/.jabba/jabba.sh" ] && source "/Users/rendo/.jabba/jabba.sh"

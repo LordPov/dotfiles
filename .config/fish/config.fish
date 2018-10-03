@@ -3,7 +3,7 @@
 #
 switch (uname)
     case Darwin
-        if not test -e /usr/local/bin/jenv
+        if not test -e ~/.jabba 
             set -x JAVA_HOME (/usr/libexec/java_home)
             set ADD_JAVA_PATH = $JAVA_HOME/bin
         end
@@ -81,3 +81,5 @@ alias vi='vim'
 alias sa='screen -r'
 
 #source /Users/bryan/.iterm2_shell_integration.fish
+
+[ -s "/Users/rendo/.jabba/jabba.fish" ]; and source "/Users/rendo/.jabba/jabba.fish"

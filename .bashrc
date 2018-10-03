@@ -153,3 +153,5 @@ function reggrep() {
 if [[ -f ~/generate_j_aliases.sh ]]; then
     . ~/generate_j_aliases.sh
 fi
+
+[ -s "/Users/rendo/.jabba/jabba.sh" ] && source "/Users/rendo/.jabba/jabba.sh"
