@@ -3,7 +3,7 @@
 #
 switch (uname)
     case Darwin
-        if not test -e ~/.jabba 
+        if not test -e ~/.jabba
             set -x JAVA_HOME (/usr/libexec/java_home)
             set ADD_JAVA_PATH = $JAVA_HOME/bin
         end
@@ -15,7 +15,6 @@ switch (uname)
         end
         set -x DYLD_FALLBACK_LIBRARY_PATH $HOME/miniconda3/lib $DYLD_FALLBACK_LIBRARY_PATH
         alias m-cli='/usr/local/m-cli/m'
-        alias j='j_darwin'
     case Linux
         set -x BROWSER (which links)
         set -x M2_HOME "/usr/share/maven"
@@ -30,7 +29,6 @@ switch (uname)
                 echo "config.fish: unsupported distro"
         end
         set ADD_JAVA_PATH = $JAVA_HOME/bin
-        alias j='j_linux'
     case '*'
         echo "config.fish: unsupported operating system"
 end
@@ -43,7 +41,7 @@ if test -e $HOME/miniconda3/bin
     set miniconda_bin = $HOME/miniconda3/bin
 	source $HOME/miniconda3/etc/fish/conf.d/conda.fish
 end
-set -x PATH $HOME/bin $miniconda_bin $gcloud_bin $ADD_JAVA_PATH /usr/local/bin $HOME/code/c0de/misc $PATH
+set -x PATH $HOME/bin $miniconda_bin $ADD_JAVA_PATH /usr/local/bin $HOME/code/c0de/misc $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1
