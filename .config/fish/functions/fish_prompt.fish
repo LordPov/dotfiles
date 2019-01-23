@@ -63,11 +63,11 @@ function fish_prompt --description 'Write out the prompt'
     # USER@HOST
     set_color brwhite
     echo -n "["
-    set_color cyan
+    set_color (whoami | shasum | cut -c 1-3)
     echo -n (whoami)
     set_color brwhite
     echo -n "@"
-    set_color blue
+    set_color (prompt_hostname | shasum | cut -c 1-3)
     echo -n (prompt_hostname)
     set_color brwhite
     echo -n ":"
