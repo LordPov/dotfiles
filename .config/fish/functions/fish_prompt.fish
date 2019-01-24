@@ -60,7 +60,7 @@ function fish_prompt --description 'Write out the prompt'
         set -g __fish_prompt_normal (set_color normal)
     end
 
-    # USER@HOST
+    # USER@HOST(SCREEN)
     set_color brwhite
     echo -n "["
     set_color (whoami | shasum | cut -c 1-3)
@@ -69,6 +69,14 @@ function fish_prompt --description 'Write out the prompt'
     echo -n "@"
     set_color (prompt_hostname | shasum | cut -c 1-3)
     echo -n (prompt_hostname)
+    if pgrep -f SCREEN > /dev/null
+        if string match -q 'screen*' $TERM
+            set_color green --bold
+        else
+            set_color red --bold
+        end
+        echo -n "*"
+    end
     set_color brwhite
     echo -n ":"
 
@@ -93,8 +101,8 @@ function fish_prompt --description 'Write out the prompt'
     echo -n (prompt_pwd)
     set_color brwhite
     echo -n "]"
-    set_color normal
 
+    set_color normal
     printf '%s ' (__fish_vcs_prompt)
 
     if not test $last_status -eq 0
