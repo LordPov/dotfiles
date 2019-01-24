@@ -36,12 +36,18 @@ end
 #
 # General
 #
-set -x CDPATH . ~/edge ~/code
+if test -e $HOME/edge
+    set edge_path = $HOME/edge
+end
+set -x CDPATH . $edge_path ~/code
 if test -e $HOME/miniconda3/bin
     set miniconda_bin = $HOME/miniconda3/bin
 	source $HOME/miniconda3/etc/fish/conf.d/conda.fish
 end
-set -x PATH $HOME/bin $miniconda_bin $ADD_JAVA_PATH /usr/local/bin $HOME/code/c0de/misc $PATH
+if test -e $HOME/code/c0de
+    set c0de_misc_path = $HOME/code/c0de/misc
+end
+set -x PATH $HOME/bin $miniconda_bin $ADD_JAVA_PATH /usr/local/bin $c0de_misc_path $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1
