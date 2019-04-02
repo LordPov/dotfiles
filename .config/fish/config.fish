@@ -38,6 +38,7 @@ end
 #
 if test -e $HOME/edge
     set edge_path = $HOME/edge
+    set -x EDGE_TEMPLATES $HOME/edge/templates
 end
 set -x CDPATH . $edge_path ~/code
 if test -e $HOME/miniconda3/bin
