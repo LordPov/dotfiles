@@ -1,6 +1,6 @@
 function ls
-    if type -q exa
-        exa $argv
+    if type -q lsd
+        lsd --icon never $argv
     else
         set ls_bin (command -s ls)
         switch (uname)
