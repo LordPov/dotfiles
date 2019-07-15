@@ -1,6 +1,6 @@
 function ls
     if type -q lsd
-        lsd --icon never $argv
+        lsd --icon=never $argv
     else
         set ls_bin (command -s ls)
         switch (uname)
