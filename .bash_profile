@@ -19,3 +19,5 @@ fi
 eval "$(jenv init -)"
 
 [ -s "/Users/rendo/.jabba/jabba.sh" ] && source "/Users/rendo/.jabba/jabba.sh"
+
+export PATH="$HOME/.cargo/bin:$PATH"

@@ -48,7 +48,7 @@ end
 if test -e $HOME/code/c0de
     set c0de_misc_path = $HOME/code/c0de/misc
 end
-set -x PATH $HOME/bin $miniconda_bin $ADD_JAVA_PATH /usr/local/bin $c0de_misc_path $PATH
+set -x PATH $HOME/bin $miniconda_bin $ADD_JAVA_PATH /usr/local/bin $c0de_misc_path $HOME/.cargo/bin $PATH
 set -x EDITOR (which vi)
 #set -x PAGER (which vimpager)
 set -x CLICOLOR 1
@@ -65,6 +65,7 @@ alias gci='git commit'
 alias gb='git branch'
 alias gpl='git pull --rebase'
 alias gps='git push'
+alias gpls='git pull --rebase && git push'
 alias gs='git status -sb'
 alias gd='git diff'
 alias gl='git log'
