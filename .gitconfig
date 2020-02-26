@@ -1,0 +1,17 @@
+[core]
+	excludesfile = ~/.gitignore_global
+	editor = /usr/bin/vim
+	autocrlf = input
+[color]
+	ui = true
+[format]
+#	pretty = oneline
+[user]
+	name = Brendon Ryan
+	email = brendon.ryan@edgesportsmarkets.com
+[branch]
+	autosetuprebase = always
+[push]
+	default = current
+[pull]
+	rebase = true
